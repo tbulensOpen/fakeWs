@@ -1,0 +1,7 @@
+urlMappings:
+  - url: http://localhost:8080/hello
+    requestParameters: (hello),id
+    value:
+  - url: http://localhost:8080/*
+    requestParameters: id
+    value: values
