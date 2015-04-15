@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse
 
 class HelloWorld extends HttpServlet {
     static List<UrlMapping> urlMappings = []
+    static Properties prop
 
     void init() {
         if (!urlMappings) {
@@ -18,7 +19,7 @@ class HelloWorld extends HttpServlet {
                 println "url: " + it.url + "  requestParam: " + it.requestParamers + "  value: " + it.value
             }
         }
-        Properties prop = new PropertiesLoader().load("fakews-env.properties")
+        prop = new PropertiesLoader().load("fakews-env.properties")
         println "Property Loading test = " + prop.getProperty("key")
     }
 
