@@ -8,29 +8,28 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class HelloWorld extends HttpServlet {
+    static List<UrlMapping> urlMappings = []
 
     void init() {
-//        InputStream inputStream = ClassLoader.getSystemResourceAsStream("fakeWsConfig.yml")
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("fakeWsConfig.yml");
-        Yaml yaml = new Yaml();
-        Map<String, List<String>> config = yaml.load(inputStream)
+        if (!urlMappings) {
+            urlMappings.addAll(new UrlMappingsBuilder().build("fakeWsConfig.yml"))
 
-        List<String> urls = config['urlMappings']
-
-        urls.each { record ->
-            println record["url"]
-            List<String> requestParameters = record["requestParameters"].split(",")
-            println requestParameters
-            new UrlMapping(url: record["url"], value: record["value"], requestParamers: requestParameters)
+            urlMappings.each {
+                println "url: " + it.url + "  requestParam: " + it.requestParamers + "  value: " + it.value
+            }
         }
+        Properties prop = new PropertiesLoader().load("fakews-env.properties")
+        println "Property Loading test = " + prop.getProperty("key")
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        println "***** URL = " + request.getRequestURL().toString()
-        response.setContentType("text/plain")
-        response.writer.write("Hello World")
+        String url = request.getRequestURL().toString()
+        if (!url.contains(".ico")) {
+            response.setContentType("text/plain")
+            response.writer.write("Hello World")
+        }
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
