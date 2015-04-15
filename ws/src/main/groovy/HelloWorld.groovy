@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse
 class HelloWorld extends HttpServlet {
     static List<UrlMapping> urlMappings = []
     static Properties prop
+    static UrlMatcher urlMatcher = new UrlMatcher()
 
     void init() {
         if (!urlMappings) {
@@ -29,7 +30,15 @@ class HelloWorld extends HttpServlet {
         String url = request.getRequestURL().toString()
         if (!url.contains(".ico")) {
             response.setContentType("text/plain")
-            response.writer.write("Hello World")
+
+            UrlMapping urlMapping = urlMatcher.findMatch(url, urlMappings)
+            if (urlMapping) {
+                response.writer.write("Hello World")
+            }
+            else {
+                response.writer.write("No Url Match found.")
+            }
+
         }
     }
 
