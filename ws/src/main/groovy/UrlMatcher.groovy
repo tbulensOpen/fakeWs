@@ -1,12 +1,25 @@
 class UrlMatcher {
 
     UrlMapping findMatch(String url, List<UrlMapping> urlMappings) {
-        exactMatch(url, urlMappings)
 
+        UrlMapping foundMatch
+        urlMappings.each { urlMapping ->
+            if (!foundMatch && isMatch(url, urlMapping.url)) {
+                foundMatch = urlMapping
+            }
+            if (!foundMatch && urlMapping.url.contains("*")) {
+                int urlPrefixLen = urlMapping.url.indexOf("*") - 1
+                String urlPrefix = url.substring(0, urlPrefixLen)
+
+                if (isMatch(urlPrefix, urlMapping.url.substring(0, urlPrefixLen))) {
+                    foundMatch = urlMapping
+                }
+            }
+        }
+        foundMatch
     }
 
-    private UrlMapping exactMatch(String url, List<UrlMapping> urlMappings) {
-        List<UrlMapping> found = urlMappings.findAll { url.contains(it.url)}
-        found ? found[0] : null
+    private boolean isMatch(String url, String urlConfig) {
+        urlConfig.equalsIgnoreCase(url)
     }
 }
