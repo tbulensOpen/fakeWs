@@ -9,10 +9,13 @@ class UrlMatcher {
             }
             if (!foundMatch && urlMapping.url.contains("*")) {
                 int urlPrefixLen = urlMapping.url.indexOf("*") - 1
-                String urlPrefix = url.substring(0, urlPrefixLen)
 
-                if (isMatch(urlPrefix, urlMapping.url.substring(0, urlPrefixLen))) {
-                    foundMatch = urlMapping
+                if (urlPrefixLen <= url.length()) {
+                    String urlPrefix = url.substring(0, urlPrefixLen)
+
+                    if (isMatch(urlPrefix, urlMapping.url.substring(0, urlPrefixLen))) {
+                        foundMatch = urlMapping
+                    }
                 }
             }
         }

@@ -9,7 +9,7 @@ class UrlMatcherTest {
     void setUp() {
         urlMatcher = new UrlMatcher()
         urlMappings << new UrlMapping(url: "http://localhost:8080/hello")
-        urlMappings << new UrlMapping(url: "http://localhost:8080/*")
+        urlMappings << new UrlMapping(url: "http://localhost:8080/hel*")
     }
 
     @Test
@@ -20,7 +20,13 @@ class UrlMatcherTest {
 
     @Test
     void findMatch_match_WildCardMatch() {
-        UrlMapping urlMapping = urlMatcher.findMatch("http://localhost:8080/AnyValue", urlMappings)
+        UrlMapping urlMapping = urlMatcher.findMatch("http://localhost:8080/hel", urlMappings)
         assert urlMapping == urlMappings[1]
+    }
+
+    @Test
+    void findMatch_Nomatch_UrlNotInConfig() {
+        UrlMapping urlMapping = urlMatcher.findMatch("http://localhost:8080/", urlMappings)
+        assert !urlMapping
     }
 }
