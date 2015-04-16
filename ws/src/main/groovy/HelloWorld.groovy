@@ -13,15 +13,8 @@ class HelloWorld extends HttpServlet {
     static UrlMatcher urlMatcher = new UrlMatcher()
 
     void init() {
-        if (!urlMappings) {
-            urlMappings.addAll(new UrlMappingsBuilder().build("fakeWsConfig.yml"))
-
-            urlMappings.each {
-                println "url: " + it.url + "  requestParam: " + it.requestParamers + "  value: " + it.value
-            }
-        }
+        urlMappings.addAll(new UrlMappingsBuilder().build("fakeWsConfig.yml"))
         prop = new PropertiesLoader().load("fakews-env.properties")
-        println "Property Loading test = " + prop.getProperty("key")
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,11 +27,9 @@ class HelloWorld extends HttpServlet {
             UrlMapping urlMapping = urlMatcher.findMatch(url, urlMappings)
             if (urlMapping) {
                 response.writer.write("Hello World")
-            }
-            else {
+            } else {
                 response.writer.write("No Url Match found.")
             }
-
         }
     }
 
