@@ -1,3 +1,5 @@
+package fakews
+
 import com.fasterxml.jackson.dataformat.yaml.snakeyaml.Yaml
 
 class UrlMappingsBuilder {

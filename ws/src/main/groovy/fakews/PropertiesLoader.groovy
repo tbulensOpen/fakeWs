@@ -1,3 +1,5 @@
+package fakews
+
 class PropertiesLoader {
 
     Properties load(String fileName) {

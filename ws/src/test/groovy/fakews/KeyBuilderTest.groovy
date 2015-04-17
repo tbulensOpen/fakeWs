@@ -1,3 +1,6 @@
+package fakews
+
+import fakews.KeyBuilder
 import org.gmock.WithGMock
 import org.junit.Before
 import org.junit.Test

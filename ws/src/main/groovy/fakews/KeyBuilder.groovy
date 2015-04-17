@@ -1,3 +1,5 @@
+package fakews
+
 import javax.servlet.http.HttpServletRequest
 
 class KeyBuilder {

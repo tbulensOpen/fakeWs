@@ -1,3 +1,6 @@
+package fakews
+
+import fakews.FakeWsServlet
 import org.junit.Test
 
 class FakeWsServletTest {

@@ -1,3 +1,7 @@
+package fakews
+
+import fakews.UrlMapping
+import fakews.UrlMatcher
 import org.junit.Before
 import org.junit.Test
 

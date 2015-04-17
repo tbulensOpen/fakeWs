@@ -1,3 +1,5 @@
+package fakews
+
 class UrlMatcher {
 
     UrlMapping findMatch(String url, List<UrlMapping> urlMappings) {

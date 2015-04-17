@@ -6,7 +6,7 @@
 
   <servlet>
 	<servlet-name>FakeWsServlet</servlet-name>
-	<servlet-class>FakeWsServlet</servlet-class>
+	<servlet-class>fakews.FakeWsServlet</servlet-class>
   </servlet>
 	
 	<servlet-mapping>

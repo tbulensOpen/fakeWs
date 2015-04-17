@@ -1,3 +1,4 @@
+package fakews
 
 class UrlMapping {
     String url
