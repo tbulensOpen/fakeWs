@@ -9,6 +9,8 @@ class FakeWsServlet extends HttpServlet {
     static List<UrlMapping> urlMappings = []
     static Properties prop
     static UrlMatcher urlMatcher = new UrlMatcher()
+    static KeyBuilder keyBuilder = new KeyBuilder()
+    static FakeWsProcessor fakeWsProcessor = new FakeWsProcessor()
 
     void init() {
         urlMappings.addAll(new UrlMappingsBuilder().build("fakeWsConfig.yml"))
@@ -24,10 +26,21 @@ class FakeWsServlet extends HttpServlet {
 
             UrlMapping urlMapping = urlMatcher.findMatch(url, urlMappings)
             if (urlMapping) {
-                response.writer.write("Hello World")
+                response.writer.write(processRequest(urlMapping, request))
             } else {
                 response.writer.write("No Url Match found.")
             }
+        }
+    }
+
+    private String processRequest(UrlMapping urlMapping, HttpServletRequest request) {
+        String key = keyBuilder.createKey(request, urlMapping.requestParamerIds)
+        if (urlMapping.valueKey) {
+            fakeWsProcessor.processPost(key, request.getParameter(urlMapping.valueKey))
+            return "Hello World Post"
+        } else {
+            String data = fakeWsProcessor.processGet(key)
+            return "Hello World Get"
         }
     }
 }

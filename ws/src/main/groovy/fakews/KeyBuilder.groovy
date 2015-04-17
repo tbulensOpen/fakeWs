@@ -4,11 +4,10 @@ import javax.servlet.http.HttpServletRequest
 
 class KeyBuilder {
 
-    String createKey(HttpServletRequest request, String configRequestParameters) {
-        String[] keyId = configRequestParameters.split(",")
+    String createKey(HttpServletRequest request, List<String> keyIds) {
 
         String key = ''
-        keyId.each { it ->
+        keyIds.each { it ->
             String tempKey = it
             if (it.contains('(')) {
                 tempKey = tempKey.replace('(', '').replace(')', '')

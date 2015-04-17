@@ -22,7 +22,7 @@ class KeyBuilderTest {
         mockRequest.getParameter("id").returns("keyId")
 
         play {
-            assert "keyId" == keyBuilder.createKey(mockRequest, "id")
+            assert "keyId" == keyBuilder.createKey(mockRequest, ["id"])
         }
     }
 
@@ -32,16 +32,17 @@ class KeyBuilderTest {
         mockRequest.getParameter("id2").returns("keyId2")
 
         play {
-            assert "keyId1keyId2" == keyBuilder.createKey(mockRequest, "id1,id2")
+            assert "keyId1keyId2" == keyBuilder.createKey(mockRequest, ["id1","id2"])
         }
     }
+
     @Test
     void createKey_LitteralText() {
         mockRequest.getParameter("id1").returns("keyId1")
         mockRequest.getParameter("id2").returns("keyId2")
 
         play {
-            assert "keyId1-keyId2" == keyBuilder.createKey(mockRequest, "id1,(-),id2")
+            assert "keyId1-keyId2" == keyBuilder.createKey(mockRequest, ["id1","(-)","id2"])
         }
     }
 }
