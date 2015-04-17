@@ -26,14 +26,14 @@ class FakeWsServlet extends HttpServlet {
 
             UrlMapping urlMapping = urlMatcher.findMatch(url, urlMappings)
             if (urlMapping) {
-                response.writer.write(processRequest(urlMapping, request))
+                response.writer.write(process(urlMapping, request))
             } else {
                 response.writer.write("No Url Match found.")
             }
         }
     }
 
-    private String processRequest(UrlMapping urlMapping, HttpServletRequest request) {
+    private String process(UrlMapping urlMapping, HttpServletRequest request) {
         String key = keyBuilder.createKey(request, urlMapping.requestParamerIds)
         if (urlMapping.valueKey) {
             fakeWsProcessor.processPost(key, request.getParameter(urlMapping.valueKey))
