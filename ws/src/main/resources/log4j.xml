@@ -10,7 +10,7 @@
     </appender>
 
     <appender name="stdFile" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="c:\aaa\fakews.log"/>
+        <param name="file" value="c:\\aaa\\fakews.log"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{DATE} [%-5p] %c{1}: %m%n"/>
         </layout>

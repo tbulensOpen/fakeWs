@@ -1,15 +1,21 @@
 package fakews
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class FakeWsServlet extends HttpServlet {
-    static List<UrlMapping> urlMappings = []
+    static List<UrlMapping> urlMappings
     static UrlMatcher urlMatcher = new UrlMatcher()
     static KeyBuilder keyBuilder = new KeyBuilder()
     static FakeWsProcessor fakeWsProcessor = new FakeWsProcessor()
+    static final int BAD_REQUEST = 500
+    Logger logger = LoggerFactory.getLogger(this.class)
+
 
     void init() {
         urlMappings.addAll(new UrlMappingsBuilder().build("fakeWsConfig.yml"))
@@ -28,10 +34,10 @@ class FakeWsServlet extends HttpServlet {
             if (urlMapping) {
                 output = process(urlMapping, request)
             } else {
-                output = "No Url Match found."
+                response.setStatus(BAD_REQUEST)
+                output = "${url} -- No Url Match found."
+                logger.error(output)
             }
-
-            println "data = " + output
             writeResponse(output, response)
         }
     }

@@ -65,6 +65,34 @@ class FakeWsServletTest {
         play {
             fakeWsServlet.doGet(mockRequest, mockResponse)
         }
+    }
 
+    @Test
+    void doGet_NoUrlMapping() {
+        String url = new StringBuffer("someUrl")
+        String data = "${url} -- No Url Match found."
+
+        mockRequest.getRequestURL().returns(url)
+        mockUrlMatcher.findMatch(url, []).returns(null)
+        mockResponse.writer.returns(mockPrintWriter)
+        mockPrintWriter.write(data)
+
+        mockResponse.setContentType("text/plain")
+        mockResponse.setStatus(FakeWsServlet.BAD_REQUEST)
+
+        play {
+            fakeWsServlet.doGet(mockRequest, mockResponse)
+        }
+    }
+
+    @Test
+    void doGet_favicon() {
+        String url = new StringBuffer("favicon.ico")
+
+        mockRequest.getRequestURL().returns(url)
+
+        play {
+            fakeWsServlet.doGet(mockRequest, mockResponse)
+        }
     }
 }
