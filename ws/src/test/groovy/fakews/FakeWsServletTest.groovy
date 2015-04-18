@@ -68,6 +68,30 @@ class FakeWsServletTest {
     }
 
     @Test
+    void doGet_MissingKey_missingKeyException() {
+        String url = new StringBuffer("someUrl")
+        String key = "someKey"
+        String data = "${[key]} for ${url} -- request parameters does not exist for this url."
+
+        UrlMapping urlMapping = new UrlMapping(requestParamerIds: [key])
+
+        System.setProperty('keyMissing', 'missingKeyException')
+
+        mockRequest.getRequestURL().returns(url)
+        mockUrlMatcher.findMatch(url, []).returns(urlMapping)
+        mockKeyBuilder.createKey(mockRequest, [key]).returns(null)
+        mockResponse.writer.returns(mockPrintWriter)
+        mockPrintWriter.write(data)
+
+        mockResponse.setContentType("text/plain")
+        mockResponse.setStatus(FakeWsServlet.BAD_REQUEST)
+
+        play {
+            fakeWsServlet.doGet(mockRequest, mockResponse)
+        }
+    }
+
+    @Test
     void doGet_NoUrlMapping_Ignore() {
         String url = new StringBuffer("someUrl")
         String data = "${url} -- No Url Match found."
