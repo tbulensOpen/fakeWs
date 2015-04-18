@@ -4,14 +4,13 @@ import javax.servlet.http.HttpServletRequest
 
 
 class FakeWsProcessor {
+    FakeWsRepository fakeWsRepository = new FakeWsRepository()
 
     String processGet(String key) {
-
-        false
+        fakeWsRepository.find(key)
     }
 
     void processPost(String key, String value) {
-
-      false
+      fakeWsRepository.update(key, value)
     }
 }
