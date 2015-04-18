@@ -20,16 +20,17 @@ class FakeWsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String output = ""
         String url = request.getRequestURL().toString()
-        if (!url.contains(".ico")) {
-            response.setContentType("text/plain")
 
+        if (!isFavicon(url)) {
             UrlMapping urlMapping = urlMatcher.findMatch(url, urlMappings)
             if (urlMapping) {
-                response.writer.write(process(urlMapping, request))
+                output = process(urlMapping, request)
             } else {
-                response.writer.write("No Url Match found.")
+                output = "No Url Match found."
             }
+            writeResponse(output, response)
         }
     }
 
@@ -42,5 +43,14 @@ class FakeWsServlet extends HttpServlet {
             String data = fakeWsProcessor.processGet(key)
             return "Hello World Get"
         }
+    }
+
+    private void writeResponse(String output, HttpServletResponse response) {
+        response.setContentType("text/plain")
+        response.writer.write(output)
+    }
+
+    private boolean isFavicon(String url) {
+        url.contains(".ico")
     }
 }
