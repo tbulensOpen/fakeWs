@@ -68,9 +68,30 @@ class FakeWsServletTest {
     }
 
     @Test
-    void doGet_NoUrlMapping() {
+    void doGet_NoUrlMapping_Ignore() {
         String url = new StringBuffer("someUrl")
         String data = "${url} -- No Url Match found."
+
+        System.setProperty('urlMappingMissing', 'ignore')
+
+        mockRequest.getRequestURL().returns(url)
+        mockUrlMatcher.findMatch(url, []).returns(null)
+        mockResponse.writer.returns(mockPrintWriter)
+        mockPrintWriter.write(data)
+
+        mockResponse.setContentType("text/plain")
+
+        play {
+            fakeWsServlet.doGet(mockRequest, mockResponse)
+        }
+    }
+
+    @Test
+    void doGet_NoUrlMapping_MisingUrlException() {
+        String url = new StringBuffer("someUrl")
+        String data = "${url} -- No Url Match found."
+
+        System.setProperty('urlMappingMissing', 'missingUrlException')
 
         mockRequest.getRequestURL().returns(url)
         mockUrlMatcher.findMatch(url, []).returns(null)

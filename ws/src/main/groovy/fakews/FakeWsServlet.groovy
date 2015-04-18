@@ -34,9 +34,7 @@ class FakeWsServlet extends HttpServlet {
             if (urlMapping) {
                 output = process(urlMapping, request)
             } else {
-                response.setStatus(BAD_REQUEST)
-                output = "${url} -- No Url Match found."
-                logger.error(output)
+                output = missingUrl(response, url)
             }
             writeResponse(output, response)
         }
@@ -50,6 +48,15 @@ class FakeWsServlet extends HttpServlet {
         } else {
             return fakeWsProcessor.processGet(key)
         }
+    }
+
+    private String missingUrl(HttpServletResponse response, String url) {
+        if (System.getProperty('urlMappingMissing').equalsIgnoreCase("missingUrlException")) {
+            response.setStatus(BAD_REQUEST)
+        }
+        String output = "${url} -- No Url Match found."
+        logger.error(output)
+        output
     }
 
     private void writeResponse(String output, HttpServletResponse response) {
