@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServletResponse
 
 class FakeWsServlet extends HttpServlet {
     static List<UrlMapping> urlMappings = []
-    static Properties prop
     static UrlMatcher urlMatcher = new UrlMatcher()
     static KeyBuilder keyBuilder = new KeyBuilder()
     static FakeWsProcessor fakeWsProcessor = new FakeWsProcessor()
 
     void init() {
         urlMappings.addAll(new UrlMappingsBuilder().build("fakeWsConfig.yml"))
-        prop = new PropertiesLoader().load("fakews-env.properties")
+        Properties prop = new PropertiesLoader().load("fakews-env.properties")
+        System.setProperties(prop)
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -30,6 +30,8 @@ class FakeWsServlet extends HttpServlet {
             } else {
                 output = "No Url Match found."
             }
+
+            println "data = " + output
             writeResponse(output, response)
         }
     }
@@ -40,8 +42,7 @@ class FakeWsServlet extends HttpServlet {
             fakeWsProcessor.processPost(key, request.getParameter(urlMapping.valueKey))
             return "Hello World Post"
         } else {
-            String data = fakeWsProcessor.processGet(key)
-            return "Hello World Get"
+            return fakeWsProcessor.processGet(key)
         }
     }
 
