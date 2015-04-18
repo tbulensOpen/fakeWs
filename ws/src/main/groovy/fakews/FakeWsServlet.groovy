@@ -26,22 +26,23 @@ class FakeWsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String output = ""
         String url = request.getRequestURL().toString()
 
         if (!isFavicon(url)) {
             UrlMapping urlMapping = urlMatcher.findMatch(url, urlMappings)
-            if (urlMapping) {
-                output = process(urlMapping, request)
-            } else {
-                output = missingUrl(response, url)
-            }
+
+            String output = (!urlMapping) ? missingUrl(response, url) : process(url, urlMapping, request, response)
             writeResponse(output, response)
         }
     }
 
-    private String process(UrlMapping urlMapping, HttpServletRequest request) {
+    private String process(String url, UrlMapping urlMapping, HttpServletRequest request, HttpServletResponse response) {
         String key = keyBuilder.createKey(request, urlMapping.requestParamerIds)
+
+        if (!key) {
+            return missingKey(url, urlMapping, response)
+        }
+
         if (urlMapping.valueKey) {
             fakeWsProcessor.processPost(key, request.getParameter(urlMapping.valueKey))
             return "Hello World Post"
@@ -50,13 +51,23 @@ class FakeWsServlet extends HttpServlet {
         }
     }
 
+    private String missingKey(String url, UrlMapping urlMapping, HttpServletResponse response) {
+        if (System.getProperty("keyMissing").equalsIgnoreCase('missingKeyException')) {
+            response.setStatus(BAD_REQUEST)
+        }
+        logMessage("${urlMapping.requestParamerIds} for ${url} -- request parameters does not exist for this url.")
+    }
+
     private String missingUrl(HttpServletResponse response, String url) {
         if (System.getProperty('urlMappingMissing').equalsIgnoreCase("missingUrlException")) {
             response.setStatus(BAD_REQUEST)
         }
-        String output = "${url} -- No Url Match found."
-        logger.error(output)
-        output
+        logMessage("${url} -- No Url Match found.")
+    }
+
+    private String logMessage(String msg) {
+        logger.error(msg)
+        msg
     }
 
     private void writeResponse(String output, HttpServletResponse response) {
