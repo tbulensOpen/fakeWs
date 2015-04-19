@@ -35,14 +35,4 @@ class KeyBuilderTest {
             assert "keyId1keyId2" == keyBuilder.createKey(mockRequest, ["id1","id2"])
         }
     }
-
-    @Test
-    void createKey_LitteralText() {
-        mockRequest.getParameter("id1").returns("keyId1")
-        mockRequest.getParameter("id2").returns("keyId2")
-
-        play {
-            assert "keyId1-keyId2" == keyBuilder.createKey(mockRequest, ["id1","(-)","id2"])
-        }
-    }
 }

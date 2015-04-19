@@ -8,14 +8,7 @@ class KeyBuilder {
 
         String key = ''
         keyIds.each { it ->
-            String tempKey = it
-            if (it.contains('(')) {
-                tempKey = tempKey.replace('(', '').replace(')', '')
-            }
-            else {
-                tempKey = request.getParameter(it)
-            }
-            key = key + tempKey
+            key = key + request.getParameter(it)
         }
         key
     }
