@@ -14,17 +14,8 @@ class UrlMappingsBuilder {
 
         urls.each { record ->
             List<String> keys = record["requestParameters"].split(",")
-            urlMappings << new UrlMapping(url: record["url"], valueKey: record["value"], requestParamerIds: handleLiterals(keys))
+            urlMappings << new UrlMapping(context: record['context'], url: record["url"], valueKey: record["value"], requestParamerIds: keys)
         }
         urlMappings
-    }
-
-    private List<String> handleLiterals(List<String> requestParameters) {
-        List<String> keys = []
-
-        requestParameters.each { it ->
-          keys << it.replace("(", "").replace(")", "")
-        }
-        keys
     }
 }

@@ -37,7 +37,7 @@ class FakeWsServlet extends HttpServlet {
     }
 
     private String process(String url, UrlMapping urlMapping, HttpServletRequest request, HttpServletResponse response) {
-        String key = keyBuilder.createKey(request, urlMapping.requestParamerIds)
+        String key = keyBuilder.createKey(request, urlMapping)
 
         if (!key) {
             return missingKey(url, urlMapping, response)
@@ -45,7 +45,7 @@ class FakeWsServlet extends HttpServlet {
 
         if (urlMapping.valueKey) {
             fakeWsProcessor.processPost(key, request.getParameter(urlMapping.valueKey))
-            return "Hello World Post"
+            return "Hello World Post -- key = " + key
         } else {
             return fakeWsProcessor.processGet(key)
         }

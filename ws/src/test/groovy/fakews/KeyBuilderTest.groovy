@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest
 class KeyBuilderTest {
     KeyBuilder keyBuilder
     HttpServletRequest mockRequest
+    UrlMapping urlMapping
 
     @Before
     void setUp() {
         mockRequest = mock(HttpServletRequest)
         keyBuilder = new KeyBuilder()
+        urlMapping = new UrlMapping(context: "clientAppName", requestParamerIds: ['id'])
     }
 
     @Test
@@ -22,7 +24,7 @@ class KeyBuilderTest {
         mockRequest.getParameter("id").returns("keyId")
 
         play {
-            assert "keyId" == keyBuilder.createKey(mockRequest, ["id"])
+            assert "clientAppNamekeyId" == keyBuilder.createKey(mockRequest, urlMapping)
         }
     }
 
@@ -30,9 +32,10 @@ class KeyBuilderTest {
     void createKey_TwoKeys() {
         mockRequest.getParameter("id1").returns("keyId1")
         mockRequest.getParameter("id2").returns("keyId2")
+        urlMapping.requestParamerIds = ["id1","id2"]
 
         play {
-            assert "keyId1keyId2" == keyBuilder.createKey(mockRequest, ["id1","id2"])
+            assert "clientAppNamekeyId1keyId2" == keyBuilder.createKey(mockRequest, urlMapping)
         }
     }
 }

@@ -16,8 +16,9 @@ class UrlMappingsBuilderTest {
     void build() {
         List<UrlMapping> urlMappings = builder.build("fakeWsConfig.yml")
         assert 3 == urlMappings.size()
+        assert "clientAppName" == urlMappings[0].context
         assert "http://localhost:8080/hello" ==  urlMappings[0].url
-        assert ['hello', 'id'] == urlMappings[0].requestParamerIds
+        assert ['id'] == urlMappings[0].requestParamerIds
         assert !urlMappings[0].valueKey
         assert "value" == urlMappings[2].valueKey
     }
