@@ -14,7 +14,7 @@ class UrlMappingsBuilder {
 
         urls.each { record ->
             List<String> requestParameters = record["requestParameters"].split(",")
-            urlMappings << new UrlMapping(url: record["url"], valueKey: record["valueKey"], requestParamerIds: requestParameters)
+            urlMappings << new UrlMapping(url: record["url"], valueKey: record["value"], requestParamerIds: requestParameters)
         }
         urlMappings
     }

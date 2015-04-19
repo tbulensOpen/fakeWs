@@ -42,7 +42,7 @@ class FakeWsServletTest {
         assert "ignore" == System.getProperty("urlMappingMissing")
         assert "ignore" == System.getProperty("keyMissing")
         assert "replace" == System.getProperty("dataAlreadyExist")
-        assert "ignore" == System.getProperty("findData")
+        assert "ignore" == System.getProperty("dataMissing")
     }
 
     @Test

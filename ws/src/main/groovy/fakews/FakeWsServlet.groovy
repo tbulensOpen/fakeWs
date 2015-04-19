@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class FakeWsServlet extends HttpServlet {
-    static List<UrlMapping> urlMappings
+    static List<UrlMapping> urlMappings = []
     static UrlMatcher urlMatcher = new UrlMatcher()
     static KeyBuilder keyBuilder = new KeyBuilder()
     static FakeWsProcessor fakeWsProcessor = new FakeWsProcessor()

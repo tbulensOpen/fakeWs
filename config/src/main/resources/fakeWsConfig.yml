@@ -1,7 +1,10 @@
 urlMappings:
   - url: http://localhost:8080/hello
-    requestParameters: (hello),id
+    requestParameters: id
     value:
   - url: http://localhost:8080/hel*
     requestParameters: id
-    value: values
+    value: value
+  - url: http://localhost:8080/setupFakeData
+    requestParameters: id
+    value: value
