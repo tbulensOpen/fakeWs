@@ -1,6 +1,6 @@
 urlMappings:
   - url: http://localhost:8080/hello
-    requestParameters: id
+    requestParameters: (hello),id
     value:
   - url: http://localhost:8080/hel*
     requestParameters: id
