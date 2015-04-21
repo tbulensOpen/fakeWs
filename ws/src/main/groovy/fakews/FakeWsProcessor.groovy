@@ -23,6 +23,25 @@ class FakeWsProcessor {
     }
 
     void processPost(String key, String value) {
-        fakeWsRepository.update(key, value)
+        String data = fakeWsRepository.find(key)
+
+        if (!data) {
+            fakeWsRepository.update(key, value)
+        } else {
+            String alreadyExists = System.getProperty("dataAlreadyExist")
+            switch (alreadyExists.toLowerCase()) {
+                case "ignore":
+                    logger.debug("Data already exists for ${key} - update ignored.")
+                    break;
+                case "replace":
+                    logger.debug("Data already exists for ${key} - update replaced existing data.")
+                    fakeWsRepository.update(key, value)
+                    break;
+                default:
+                    String msg = "Data already exists for ${key} - update failed."
+                    logger.error(msg)
+                    throw new RuntimeException(msg)
+            }
+        }
     }
 }
