@@ -16,10 +16,9 @@ class FakeWsServlet extends HttpServlet {
     static final int BAD_REQUEST = 500
     Logger logger = LoggerFactory.getLogger(this.class)
 
-
     void init() {
         urlMappings.addAll(new UrlMappingsBuilder().build("fakeWsConfig.yml"))
-        Properties prop = new PropertiesLoader().load("fakews-env.properties")
+        Properties prop = new PropertiesLoader().load("fakeWs-env.properties")
         System.setProperties(prop)
     }
 
@@ -29,10 +28,15 @@ class FakeWsServlet extends HttpServlet {
         String url = request.getRequestURL().toString()
 
         if (!isFavicon(url)) {
-            UrlMapping urlMapping = urlMatcher.findMatch(url, urlMappings)
+            try {
+                UrlMapping urlMapping = urlMatcher.findMatch(url, urlMappings)
 
-            String output = (!urlMapping) ? missingUrl(response, url) : process(url, urlMapping, request, response)
-            writeResponse(output, response)
+                String output = (urlMapping) ? process(url, urlMapping, request, response) : missingUrl(response, url)
+                writeResponse(output, response)
+            } catch (Exception ex) {
+                response.setStatus(BAD_REQUEST)
+                writeResponse(ex.getMessage(), response)
+            }
         }
     }
 
@@ -45,7 +49,7 @@ class FakeWsServlet extends HttpServlet {
 
         if (urlMapping.valueKey) {
             fakeWsProcessor.processPost(key, request.getParameter(urlMapping.valueKey))
-            return "Hello World Post -- key = " + key
+            return "Post Successful -- key = " + key
         } else {
             return fakeWsProcessor.processGet(key)
         }
