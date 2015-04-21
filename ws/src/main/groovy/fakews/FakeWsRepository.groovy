@@ -13,7 +13,7 @@ class FakeWsRepository {
     }
 
     void update(String key, String value) {
-        logger.error("Post: key = " + key + "  value = " + value)
+        logger.debug("Post: key = " + key + "  value = " + value)
         data.put(key, value)
     }
 
