@@ -98,12 +98,23 @@ class FakeWsProcessorTest {
             fakeWsProcessor.processPost(KEY, DATA)
         }
     }
+    @Test
+    void processPost_DataSame_Ignore() {
+        System.setProperty("dataAlreadyExist", "writeAfterWriteException")
+
+        mockFakeWsRepository.find(KEY).returns(DATA)
+        mockLogger.debug("Data already exists for ${KEY} and data is the same - update ignored.")
+
+        play {
+            fakeWsProcessor.processPost(KEY, DATA)
+        }
+    }
 
     @Test
     void processPost_writeAfterWriteException() {
         System.setProperty("dataAlreadyExist", "writeAfterWriteException")
 
-        mockFakeWsRepository.find(KEY).returns(DATA)
+        mockFakeWsRepository.find(KEY).returns("Some old data.")
         mockLogger.error("Data already exists for ${KEY} - update failed.")
 
         play {

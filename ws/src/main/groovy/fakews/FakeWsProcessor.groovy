@@ -38,9 +38,14 @@ class FakeWsProcessor {
                     fakeWsRepository.update(key, value)
                     break;
                 default:
-                    String msg = "Data already exists for ${key} - update failed."
-                    logger.error(msg)
-                    throw new RuntimeException(msg)
+                    if (value.equals(data)) {
+                        logger.debug("Data already exists for ${key} and data is the same - update ignored.")
+                    }
+                    else {
+                        String msg = "Data already exists for ${key} - update failed."
+                        logger.error(msg)
+                        throw new RuntimeException(msg)
+                    }
             }
         }
     }
