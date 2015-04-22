@@ -55,7 +55,7 @@ class FakeWsServletTest {
 
         mockRequest.getRequestURL().returns(url)
         mockUrlMatcher.findMatch(url, []).returns(urlMapping)
-        mockKeyBuilder.createKey(mockRequest, urlMapping).returns(key)
+        mockKeyBuilder.createKey(mockRequest, urlMapping).returns([key])
         mockFakeWsProcessor.processGet(key).returns(data)
         mockResponse.writer.returns(mockPrintWriter)
         mockPrintWriter.write(data)
@@ -79,7 +79,7 @@ class FakeWsServletTest {
 
         mockRequest.getRequestURL().returns(url)
         mockUrlMatcher.findMatch(url, []).returns(urlMapping)
-        mockKeyBuilder.createKey(mockRequest, urlMapping).returns(null)
+        mockKeyBuilder.createKey(mockRequest, urlMapping).returns([])
         mockResponse.writer.returns(mockPrintWriter)
         mockPrintWriter.write(data)
 

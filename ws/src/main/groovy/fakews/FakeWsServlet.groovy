@@ -41,18 +41,22 @@ class FakeWsServlet extends HttpServlet {
     }
 
     private String process(String url, UrlMapping urlMapping, HttpServletRequest request, HttpServletResponse response) {
-        String key = keyBuilder.createKey(request, urlMapping)
+        List<String> keys = keyBuilder.createKey(request, urlMapping)
 
-        if (!key) {
+        if (!keys) {
             return missingKey(url, urlMapping, response)
         }
 
+        String data = ""
         if (urlMapping.valueKey) {
-            fakeWsProcessor.processPost(key, request.getParameter(urlMapping.valueKey))
-            return "Post Successful -- key = " + key
+            keys.each { key ->
+                fakeWsProcessor.processPost(key, request.getParameter(urlMapping.valueKey))
+            }
+            data = "Post Successful -- key = " + keys.join(",")
         } else {
-            return fakeWsProcessor.processGet(key)
+            data = fakeWsProcessor.processGet(keys[0])
         }
+        data
     }
 
     private String missingKey(String url, UrlMapping urlMapping, HttpServletResponse response) {

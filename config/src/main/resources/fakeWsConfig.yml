@@ -8,6 +8,6 @@ urlMappings:
     requestParameters: id
     value: value
   - url: http://localhost:8080/setupFakeData
-    context: clientAppName
+    context: clientAppName1,clientAppName2
     requestParameters: id
     value: value

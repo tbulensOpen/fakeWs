@@ -20,11 +20,12 @@ Fake Web Service takes two files within the classpath for configuration:
    FakeWsConfig.yml
 
 Fakews-env.properties controlls the behavior of the fake web service.
-  urlMappingMissing=ignore  # Values: ignore, missingUrlException
-  keyMissing=ignore         # Values: ignore, missingKeyException
-  dataAlreadyExist=replace  # Post: Values: ignore, replace, writeAfterWriteException
-  dataMissing=ignore        # Get: Values: ignore, missingDataException
+  urlMappingMissing=ignore
+  keyMissing=ignore
+  dataAlreadyExist=replace
+  dataMissing=ignore
 
 FakeWsConfig.yml is responsible for each client defining which urls are coming in.
-   Each url, then indicates with request parameters makes up the key, along which request parameter makes retrieves the data.
+   Each url, then indicates with request parameters makes up the key,
+   along which request parameter makes retrieves the data.
 

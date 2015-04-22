@@ -4,12 +4,20 @@ import javax.servlet.http.HttpServletRequest
 
 class KeyBuilder {
 
-    String createKey(HttpServletRequest request, UrlMapping urlMapping) {
+    List<String> createKey(HttpServletRequest request, UrlMapping urlMapping) {
 
-        String key = urlMapping.context
-        urlMapping.requestParamerIds.each { it ->
-            key = key + request.getParameter(it)
+        List<String> contexts = urlMapping.context.split(",")
+        String key = ""
+        List<String> keys = []
+
+        contexts.each { context ->
+            key = context
+            urlMapping.requestParamerIds.each { it ->
+                key = key + request.getParameter(it)
+            }
+            keys.add(key)
         }
-        key
+
+        keys
     }
 }
